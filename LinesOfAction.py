@@ -1,0 +1,2 @@
+class LinesOfAction:
+    pass
