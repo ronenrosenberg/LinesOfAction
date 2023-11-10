@@ -23,3 +23,9 @@ def test_num_pos_diagonal():
     piece = board.getBoard()[2][0]
     answer = board.NumPosDiagonal(piece)
     assert answer == 2
+
+def test_num_neg_diagonal():
+    board = Board(10)
+    piece = board.getBoard()[2][0]
+    answer = board.NumNegDiagonal(piece)
+    assert answer == 2
