@@ -14,13 +14,52 @@ class Board:
     def getBoard(self):
         return self.board
     
-    def numRow(self, Piece):
+    def numRow(self, piece):
         """returns the number of pieces in a row as an integer"""
-        therow = Piece.location[1]
+        theRow = piece.location[1]
         counter = 0
         for i in range(0, self.size):
-            if self.board[therow][i] != None:
+            if self.board[theRow][i] != None:
                 counter += 1
         return counter
 
+    def numCol(self, piece):
+        theCol = piece.location[0]
+        counter = 0
+        for i in range(0, self.size):
+            if self.board[i][theCol] != None:
+                counter += 1
+        return counter
+    
+    def NumPosDiagonal(self, piece):
+        (x, y) = Piece.location[0]
+        x -= 1; y -= 1
+        counter = 0
+        while x != 0 and y != 0:
+            if self.board[x][y] != None:
+                counter += 1
+            x -= 1; y -=1
+
+        (x, y) = Piece.location[0]
+        x += 1; y += 1
+        while x != self.size-1 and y != self.size-1:
+            if self.board[x][y] != None:
+                counter += 1
+            x += 1; y +=1
+
+    def NumNegDiagonal(self, piece):
+        (x, y) = Piece.location[0]
+        x -= 1; y += 1
+        counter = 0
+        while x != 0 and y != 0:
+            if self.board[x][y] != None:
+                counter += 1
+            x -= 1; y +=1
+
+        (x, y) = Piece.location[0]
+        x += 1; y -= 1
+        while x != self.size-1 and y != self.size-1:
+            if self.board[x][y] != None:
+                counter += 1
+            x += 1; y -=1
 
