@@ -10,6 +10,9 @@ class Piece:
     def isSameTeam(self, other):
         """Checks if one piece is on the same team as another"""
         return self.team == other.team
+    
+    def getLocation(self):
+        return self.location
 
     def move(self):
         pass
