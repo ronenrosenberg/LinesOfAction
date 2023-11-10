@@ -1,5 +1,5 @@
-import Board
-import Piece
+from Board import *
+from Piece import *
 import stddraw
 
 
@@ -11,6 +11,7 @@ class LinesOfAction:
         self.SIZE = SIZE
 
     def display(self):
+        """draws a frame of the board"""
         stddraw.clear()
 
         #a few definitions
@@ -19,18 +20,27 @@ class LinesOfAction:
         half = side/2.0
 
         #draw the board
+        #blue background
+        stddraw.setPenColor(stddraw.BOOK_LIGHT_BLUE)
+        stddraw.filledSquare(0, 0, 1)
         for x in range(size):
             for y in range(size):
-                square = self.board.getBoard()[x , y]
+                #get a specifc square of the board
+                square = self.board.getBoard()[x][y]
+                #if there's a piece on the square
                 if (square != None):
-                    stddraw.setPenColor(stddraw.RED)
-                    stddraw.filledCircle(x*side + half, y*side + half, half/0.5*0.3)
-                    stddraw.setPenColor(stddraw.BLACK)
-                else:
-                    stddraw.setPenColor(stddraw.BOOK_LIGHT_BLUE)
-                    stddraw.filledSquare(x*side + half, y*side + half, half)
-                    stddraw.setPenColor(stddraw.BLACK)
+                    #draw white piece
+                    if square.team == "white":
+                        stddraw.setPenColor(stddraw.WHITE)
+                        stddraw.filledCircle(x*side + half, y*side + half, half/0.5*0.3)
+                    #draw black piece
+                    else:
+                        stddraw.setPenColor(stddraw.BLACK)
+                        stddraw.filledCircle(x*side + half, y*side + half, half/0.5*0.3)
+                #draw black borders
+                stddraw.setPenColor(stddraw.BLACK)
                 stddraw.square(x*side + half, y*side + half, half)
+        #idfk
         stddraw.show(0)
     
     def play(self):
@@ -40,4 +50,5 @@ class LinesOfAction:
 
 if __name__ == "__main__":
     game = LinesOfAction(SIZE)
-    game.play()
+    while True:
+        game.play()

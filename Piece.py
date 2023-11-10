@@ -1,6 +1,7 @@
 class Piece:
-    def __init__(self, team):
+    def __init__(self, team, location):
         self.team = team
+        self.location = location
     
     def getTeam(self):
         """Returns the team of the piece"""
