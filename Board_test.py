@@ -7,6 +7,19 @@ def test_different_boards():
     assert first != second
 
 def test_num_row():
-    first = Board(10)
-    answer = Board.numRow(first.board[0][2])
+    board = Board(10)
+    piece = board.getBoard()[0][2]
+    answer = board.numRow(piece)
+    assert answer == 2
+
+def test_num_col():
+    board = Board(10)
+    piece = board.getBoard()[2][0]
+    answer = board.numCol(piece)
+    assert answer == 2
+
+def test_num_pos_diagonal():
+    board = Board(10)
+    piece = board.getBoard()[2][0]
+    answer = board.NumPosDiagonal(piece)
     assert answer == 2
