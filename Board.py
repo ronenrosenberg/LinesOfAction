@@ -17,6 +17,18 @@ class Board:
         "returns board as a 2D array"
         return self.board
     
+    #need to make this still
+    def move(self, piece, newLocationTuple):
+        "moves a piece from one location to another"
+        (oldX, oldY) = piece.getLocation()
+        (x, y) = newLocationTuple
+
+        self.board[oldX][oldY] = None
+        self.board[x][y] = piece
+
+        piece.setLocation(newLocationTuple)
+        
+    
     def numRow(self, piece):
         """returns the number of pieces in a row as an integer"""
         theRow = piece.getLocation()[1]

@@ -2,7 +2,6 @@ from Board import *
 from Piece import *
 import stddraw
 
-
 SIZE = 10
 
 class LinesOfAction:
@@ -12,6 +11,7 @@ class LinesOfAction:
         self.SIDE = 1.0/SIZE
         self.HALF = self.SIDE/2.0
         self.state = "idle"
+        self.selected = None
 
     def display(self, state):
         """draws a frame of the board in a given state"""
@@ -44,37 +44,43 @@ class LinesOfAction:
                 stddraw.setPenColor(stddraw.BLACK)
                 stddraw.square(x*side + half, y*side + half, half)
                 
-        if state == "picking":
+        #non-idle states
+        if state != "idle":
             xx = stddraw.mouseX()
             yy = stddraw.mouseY()
             x = round((xx - half)/side)
             y = round((yy - half)/side)
-
-            #highlights the currently picked piece
+        """remember to change this condition when the moving state is fixed"""
+        if state == "picking":
+            #highlights the currently picked piece (given a piece is being clicked)
             if self.board.getBoard()[x][y] != None:
                 stddraw.setPenColor(stddraw.YELLOW)
                 stddraw.filledCircle(x*side + half, y*side + half, half/0.5*0.5)
                 stddraw.setPenColor(stddraw.BLACK)
                 stddraw.filledCircle(x*side + half, y*side + half, half/0.5*0.4)
-        if state == "moving":
-            xx = stddraw.mouseX()
-            yy = stddraw.mouseY()
-            x = round((xx - half)/side)
-            y = round((yy - half)/side)
 
-            self.board.getBoard()[x][y] = None
+                self.selected = self.board.getBoard()[x][y]
+        if state == "moving":
+            self.board.move(self.selected, (x, y))
+            self.selected = None
             self.state = "idle"
-        #idfk
+        
+        #don't question this line, it just makes it work
         stddraw.show(0)
     
     def play(self):
+        #returns True if there has been a click since last time function was called
+        isClick = stddraw.mousePressed()
+
         #condition from picking -> moving
-        if stddraw.mousePressed() and self.state == "picking":
+        if isClick and self.selected != None:
             self.state = "moving"
         #condition from idle -> picking
-        if stddraw.mousePressed() and self.state == "idle":
+        elif isClick:
             self.state = "picking"
 
+
+        print(self.state)
         self.display(self.state)
         
 

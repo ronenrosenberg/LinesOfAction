@@ -13,6 +13,9 @@ class Piece:
     
     def getLocation(self):
         return self.location
+    
+    def setLocation(self, newLocation):
+        self.location = newLocation
 
     def move(self):
         pass
