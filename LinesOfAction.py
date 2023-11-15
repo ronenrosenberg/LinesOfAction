@@ -2,14 +2,19 @@ from Board import *
 from Piece import *
 import stddraw
 
-SIZE = 10
+SIZE = 8
 
 class LinesOfAction:
-    def __init__(self, SIZE = 10):
+    def __init__(self, SIZE = 8):
+        #the actual 2D array
         self.board = Board(SIZE)
+
+        #useful for drawing
         self.SIZE = SIZE
         self.SIDE = 1.0/SIZE
         self.HALF = self.SIDE/2.0
+
+        #logic variables
         self.state = "idle"
         self.selected = None
 
@@ -36,8 +41,7 @@ class LinesOfAction:
                     if square.getTeam() == "white":
                         stddraw.setPenColor(stddraw.WHITE)
                         stddraw.filledCircle(x*side + half, y*side + half, half/0.5*0.4)
-                    #draw black piece
-                    else:
+                    else: #otherwise draw the black piece
                         stddraw.setPenColor(stddraw.BLACK)
                         stddraw.filledCircle(x*side + half, y*side + half, half/0.5*0.4)
                 #draw black borders
@@ -48,25 +52,29 @@ class LinesOfAction:
         if state != "idle":
             x = round((stddraw.mouseX() - half)/side)
             y = round((stddraw.mouseY() - half)/side)
+        #state activated when there's been a click
         if state == "picking":
-            #highlights the currently picked piece (given a piece is being clicked)
             highlighted = self.board.getBoard()[x][y]
-            if  highlighted != None:
+            if  highlighted != None: #makes sure that clicked square has a piece in it
+                #highlights piece
                 stddraw.setPenColor(stddraw.YELLOW)
                 stddraw.filledCircle(x*side + half, y*side + half, half/0.5*0.5)
                 #draw white piece
                 if highlighted.getTeam() == "white":
                     stddraw.setPenColor(stddraw.WHITE)
                     stddraw.filledCircle(x*side + half, y*side + half, half/0.5*0.4)
-                #draw black piece
-                else:
+                else: #otherwise draw the black piece
                     stddraw.setPenColor(stddraw.BLACK)
                     stddraw.filledCircle(x*side + half, y*side + half, half/0.5*0.4)
 
+                #piece is "selected"
                 self.selected = self.board.getBoard()[x][y]
+        #state activated on a second click, to move the piece to the second click
         if state == "moving":
             self.board.move(self.selected, (x, y))
             self.selected = None
+
+            #reset state
             self.state = "idle"
         
         #don't question this line, it just makes it work
@@ -77,7 +85,7 @@ class LinesOfAction:
         isClick = stddraw.mousePressed()
 
         #condition from picking -> moving
-        if isClick and self.selected != None:
+        if isClick and self.selected != None: #if there's a click and something has already been selected
             self.state = "moving"
         #condition from idle -> picking
         elif isClick:
