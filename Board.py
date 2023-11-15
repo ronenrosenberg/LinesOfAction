@@ -20,12 +20,15 @@ class Board:
     #need to make this still
     def move(self, piece, newLocationTuple):
         "moves a piece from one location to another"
+        #old and new locations
         (oldX, oldY) = piece.getLocation()
         (x, y) = newLocationTuple
 
+        #moves piece
         self.board[oldX][oldY] = None
         self.board[x][y] = piece
 
+        #correct's piece's location attribute
         piece.setLocation(newLocationTuple)
         
     

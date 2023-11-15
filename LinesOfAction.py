@@ -44,20 +44,24 @@ class LinesOfAction:
                 stddraw.setPenColor(stddraw.BLACK)
                 stddraw.square(x*side + half, y*side + half, half)
                 
-        #non-idle states
+        #as long as state isn't idle, will grab click location
         if state != "idle":
-            xx = stddraw.mouseX()
-            yy = stddraw.mouseY()
-            x = round((xx - half)/side)
-            y = round((yy - half)/side)
-        """remember to change this condition when the moving state is fixed"""
+            x = round((stddraw.mouseX() - half)/side)
+            y = round((stddraw.mouseY() - half)/side)
         if state == "picking":
             #highlights the currently picked piece (given a piece is being clicked)
-            if self.board.getBoard()[x][y] != None:
+            highlighted = self.board.getBoard()[x][y]
+            if  highlighted != None:
                 stddraw.setPenColor(stddraw.YELLOW)
                 stddraw.filledCircle(x*side + half, y*side + half, half/0.5*0.5)
-                stddraw.setPenColor(stddraw.BLACK)
-                stddraw.filledCircle(x*side + half, y*side + half, half/0.5*0.4)
+                #draw white piece
+                if highlighted.getTeam() == "white":
+                    stddraw.setPenColor(stddraw.WHITE)
+                    stddraw.filledCircle(x*side + half, y*side + half, half/0.5*0.4)
+                #draw black piece
+                else:
+                    stddraw.setPenColor(stddraw.BLACK)
+                    stddraw.filledCircle(x*side + half, y*side + half, half/0.5*0.4)
 
                 self.selected = self.board.getBoard()[x][y]
         if state == "moving":
