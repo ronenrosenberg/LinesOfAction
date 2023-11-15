@@ -17,7 +17,6 @@ class Board:
         "returns board as a 2D array"
         return self.board
     
-    #need to make this still
     def move(self, piece, newLocationTuple):
         "moves a piece from one location to another"
         #old and new locations
@@ -30,8 +29,7 @@ class Board:
 
         #correct's piece's location attribute
         piece.setLocation(newLocationTuple)
-        
-    
+
     def numRow(self, piece):
         """returns the number of pieces in a row as an integer"""
         theRow = piece.getLocation()[1]
@@ -50,7 +48,7 @@ class Board:
                 counter += 1
         return counter
     
-    def NumPosDiagonal(self, piece):
+    def numPosDiagonal(self, piece):
         """returns the number of pieces in a positive diagonal as an integer"""
         (x, y) = piece.getLocation()
         x -= 1; y -= 1
@@ -68,7 +66,7 @@ class Board:
         
         return counter
 
-    def NumNegDiagonal(self, piece):
+    def numNegDiagonal(self, piece):
         """returns the number of pieces in a negative diagonal as an integer"""
         (x, y) = piece.getLocation()
         x -= 1; y += 1
@@ -85,3 +83,18 @@ class Board:
             x += 1; y -=1
 
         return counter
+
+def range(self, piece):
+        availables = []
+        (x, y) = piece.location
+        for row in range(len(self.numRow(piece))):
+            row += 1
+            availables.append((x, y+row))
+            availables.append((x, y-row))
+        for col in range(len(self.numCol(piece))):
+            col += 1
+            availables.append((x+col, y))
+            availables.append((x-col, y))
+        for ack in range(len(self.numPosDiagonal(piece))):
+            ack += 1
+            availables.append(())
