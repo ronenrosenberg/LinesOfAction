@@ -85,6 +85,7 @@ class Board:
         return counter
     
     def teamTotalPieces(self):
+        """returns an ordered pair of white, and then black's, total pieces"""
         numWhite, numBlack = 0, 0
         for x in range(self.size):
             for y in range(self.size):
@@ -98,16 +99,73 @@ class Board:
         return (numWhite, numBlack)
     
     def range(self, piece):
-            availables = []
-            (x, y) = piece.location
-            for row in range(len(self.numRow(piece))):
-                row += 1
-                availables.append((x, y+row))
-                availables.append((x, y-row))
-            for col in range(len(self.numCol(piece))):
-                col += 1
-                availables.append((x+col, y))
-                availables.append((x-col, y))
-            for ack in range(len(self.numPosDiagonal(piece))):
-                ack += 1
-                availables.append(())
+        """returns a list of ordered pairs, containing all the locations that a piece can move to."""
+        availables = []
+        (x, y) = piece.getLocation
+
+        #iterating through number in row
+        nah = self.numRow(piece)
+        row = 0-nah #from negative to positive
+        while row <= nah:
+            if row != 0:
+                if self.board[x][y+row] == None:
+                    #if tile is empty, you can go!
+                    availables.append((x, y+row))
+                elif self.board[x][y+row].getTeam != piece.getTeam:
+                    availables.append((x, y+row))
+                    if row > 0:
+                        # if u run into enemy on ur way away, u can't jump
+                        row = nah
+                    if row < 0:
+                        # if u run into an enemy on ur way to, delete prev spaces
+                        for i in range(nah+col):
+                            availables.pop(len(availables)-1)
+            row += 1
+
+        nah = self.numCol(piece)
+        col = 0-nah
+        while col <= nah:
+            if col != 0:
+                if self.board[x+col][y] == None:
+                    availables.append((x+col, y))
+                elif self.board[x+col][y].getTeam != piece.getTeam:
+                    availables.append((x+col, y))
+                    if col > 0:
+                        col = nah
+                    if col < 0:
+                        for i in range(nah+col):
+                            availables.pop(len(availables)-1)
+            col += 1
+
+        nah = self.numPosDiagonal(piece)
+        ack = 0-nah
+        while ack <= nah:
+            if ack != 0:
+                if self.board[x+ack][y+ack] == None:
+                    availables.append((x+ack, y+ack))
+                elif self.board[x+ack][y+ack].getTeam != piece.getTeam:
+                    availables.append((x+ack, y+ack))
+                    if ack > 0:
+                        ack = nah
+                    if ack < 0:
+                        for i in range(nah+ack):
+                            availables.pop(len(availables)-1)
+            ack += 1
+
+        nah = self.numNegDiagonal(piece)
+        ick = 0-nah
+        while ick <= nah:
+            if ick != 0:
+                if self.board[x+ick][y-ick] == None:
+                    availables.append((x+ick, y-ick))
+                elif self.board[x+ick][y-ick].getTeam != piece.getTeam:
+                    availables.append((x+ick, y-ick))
+                    if ick > 0:
+                        ick = nah
+                    if ick < 0:
+                        for i in range(nah+ick):
+                            availables.pop(len(availables)-1)
+            ick += 1
+
+        return availables
+    
