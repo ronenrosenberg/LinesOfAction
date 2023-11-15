@@ -83,18 +83,31 @@ class Board:
             x += 1; y -=1
 
         return counter
-
-def range(self, piece):
-        availables = []
-        (x, y) = piece.location
-        for row in range(len(self.numRow(piece))):
-            row += 1
-            availables.append((x, y+row))
-            availables.append((x, y-row))
-        for col in range(len(self.numCol(piece))):
-            col += 1
-            availables.append((x+col, y))
-            availables.append((x-col, y))
-        for ack in range(len(self.numPosDiagonal(piece))):
-            ack += 1
-            availables.append(())
+    
+    def teamTotalPieces(self):
+        numWhite, numBlack = 0, 0
+        for x in range(self.size):
+            for y in range(self.size):
+                #get a specific square of the board
+                square = self.board[x][y]
+                if square != None:
+                    if square.getTeam() == "white":
+                        numWhite += 1
+                    else:
+                        numBlack += 1
+        return (numWhite, numBlack)
+    
+    def range(self, piece):
+            availables = []
+            (x, y) = piece.location
+            for row in range(len(self.numRow(piece))):
+                row += 1
+                availables.append((x, y+row))
+                availables.append((x, y-row))
+            for col in range(len(self.numCol(piece))):
+                col += 1
+                availables.append((x+col, y))
+                availables.append((x-col, y))
+            for ack in range(len(self.numPosDiagonal(piece))):
+                ack += 1
+                availables.append(())

@@ -66,9 +66,13 @@ class LinesOfAction:
                 else: #otherwise draw the black piece
                     stddraw.setPenColor(stddraw.BLACK)
                     stddraw.filledCircle(x*side + half, y*side + half, half/0.5*0.4)
-
+                
                 #piece is "selected"
                 self.selected = self.board.getBoard()[x][y]
+            else: #if no piece has been selected, go back to idle
+                self.state = "idle"
+
+                
         #state activated on a second click, to move the piece to the second click
         if state == "moving":
             self.board.move(self.selected, (x, y))
@@ -80,6 +84,17 @@ class LinesOfAction:
         #don't question this line, it just makes it work
         stddraw.show(0)
     
+    #checks for win state
+    def won(self):
+        #might be better to put into Board
+        print(self.board.teamTotalPieces())
+        """
+        for x in range(self.SIZE):
+            for y in range(self.SIZE):
+                if numBlack == self.board.numCol(Piece("white", (x, y))): return True
+                """
+        
+
     def play(self):
         #returns True if there has been a click since last time function was called
         isClick = stddraw.mousePressed()
@@ -91,9 +106,11 @@ class LinesOfAction:
         elif isClick:
             self.state = "picking"
 
-
         print(self.state)
         self.display(self.state)
+
+        if self.won():
+            quit()
         
 
 
