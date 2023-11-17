@@ -17,6 +17,7 @@ class LinesOfAction:
         #logic variables
         self.state = "idle"
         self.selected = None
+        self.currentTeam = "black"
 
     def display(self, state):
         """draws a frame of the board in a given state"""
@@ -55,7 +56,7 @@ class LinesOfAction:
         #state activated when there's been a click
         if state == "picking":
             highlighted = self.board.getBoard()[x][y]
-            if  highlighted != None: #makes sure that clicked square has a piece in it
+            if  highlighted != None and highlighted.getTeam() == self.currentTeam: #makes sure that clicked square has a piece in it
                 #highlights piece
                 stddraw.setPenColor(stddraw.YELLOW)
                 stddraw.filledCircle(x*side + half, y*side + half, half/0.5*0.5)
@@ -87,6 +88,12 @@ class LinesOfAction:
 
             #reset state
             self.state = "idle"
+
+            #flips to opposite team's turn
+            if self.currentTeam == "black":
+                self.currentTeam = "white"
+            else:
+                self.currentTeam = "black"
         
         #don't question this line, it just makes it work
         stddraw.show(0)
