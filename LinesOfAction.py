@@ -86,13 +86,11 @@ class LinesOfAction:
     
     #checks for win state
     def won(self):
-        #might be better to put into Board
-        print(self.board.teamTotalPieces())
-        """
-        for x in range(self.SIZE):
-            for y in range(self.SIZE):
-                if numBlack == self.board.numCol(Piece("white", (x, y))): return True
-                """
+        numWhite, numBlack = self.board.teamTotalPieces()
+        if numWhite == self.board.findConnectedPieceSize("white"):
+            print("white wins")
+        elif numBlack == self.board.findConnectedPieceSize("black"):
+            print("black wins")
         
 
     def play(self):
