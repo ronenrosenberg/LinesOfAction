@@ -72,7 +72,7 @@ class LinesOfAction:
                 for coord in coords:
                     (x, y) = coord
                     stddraw.setPenColor(stddraw.YELLOW)
-                    stddraw.filledSquare(x*side + half, y*side + half, half)
+                    stddraw.filledSquare(x*side + half, y*side + half, half * 0.93)
                 
                 #piece is "selected"
                 self.selected = highlighted
