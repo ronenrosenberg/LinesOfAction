@@ -75,13 +75,13 @@ class Board:
         (x, y) = piece.getLocation()
         x -= 1; y += 1
         counter = 0
-        while x != 0 and y != 0:
+        while x != 0 and y != self.size-1:
             if self.board[x][y] != None:
                 counter += 1
             x -= 1; y +=1
 
         (x, y) = piece.getLocation()
-        while x != self.size-1 and y != self.size-1:
+        while x != self.size-1 and y != 0:
             if self.board[x][y] != None:
                 counter += 1
             x += 1; y -=1
@@ -143,7 +143,7 @@ class Board:
     def range(self, piece):
         """returns a list of ordered pairs, containing all the locations that a piece can move to."""
         availables = []
-        (x, y) = piece.getLocation
+        (x, y) = piece.getLocation()
 
         #iterating through number in row
         nah = self.numRow(piece)
@@ -160,7 +160,7 @@ class Board:
                         row = nah
                     if row < 0:
                         # if u run into an enemy on ur way to, delete prev spaces
-                        for i in range(nah+col):
+                        for i in range(nah+row):
                             availables.pop(len(availables)-1)
             row += 1
 
