@@ -153,7 +153,7 @@ class Board:
                 if self.board[x][y+row] == None:
                     #if tile is empty, you can go!
                     availables.append((x, y+row))
-                elif self.board[x][y+row].getTeam != piece.getTeam:
+                elif self.board[x][y+row].getTeam() != piece.getTeam():
                     availables.append((x, y+row))
                     if row > 0:
                         # if u run into enemy on ur way away, u can't jump
@@ -170,7 +170,7 @@ class Board:
             if col != 0:
                 if self.board[x+col][y] == None:
                     availables.append((x+col, y))
-                elif self.board[x+col][y].getTeam != piece.getTeam:
+                elif self.board[x+col][y].getTeam() != piece.getTeam():
                     availables.append((x+col, y))
                     if col > 0:
                         col = nah
@@ -185,7 +185,7 @@ class Board:
             if ack != 0:
                 if self.board[x+ack][y+ack] == None:
                     availables.append((x+ack, y+ack))
-                elif self.board[x+ack][y+ack].getTeam != piece.getTeam:
+                elif self.board[x+ack][y+ack].getTeam() != piece.getTeam():
                     availables.append((x+ack, y+ack))
                     if ack > 0:
                         ack = nah
@@ -200,7 +200,7 @@ class Board:
             if ick != 0:
                 if self.board[x+ick][y-ick] == None:
                     availables.append((x+ick, y-ick))
-                elif self.board[x+ick][y-ick].getTeam != piece.getTeam:
+                elif self.board[x+ick][y-ick].getTeam() != piece.getTeam():
                     availables.append((x+ick, y-ick))
                     if ick > 0:
                         ick = nah

@@ -67,13 +67,14 @@ class LinesOfAction:
                     stddraw.setPenColor(stddraw.BLACK)
                     stddraw.filledCircle(x*side + half, y*side + half, half/0.5*0.4)
                 
-                #for coord in self.board.range(highlighted):
-                #    (x, y) = coord
-                #    stddraw.setPenColor(stddraw.YELLOW)
-                #   stddraw.filledSquare(x*side + half, y*side + half, half)
+                coords = self.board.range(highlighted)
+                for coord in coords:
+                    (x, y) = coord
+                    stddraw.setPenColor(stddraw.YELLOW)
+                    stddraw.filledSquare(x*side + half, y*side + half, half)
                 
                 #piece is "selected"
-                self.selected = self.board.getBoard()[x][y]
+                self.selected = highlighted
 
             else: #if no piece has been selected, go back to idle
                 self.state = "idle"
