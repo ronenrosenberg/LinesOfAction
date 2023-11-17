@@ -36,7 +36,7 @@ class Board:
 
     def numRow(self, piece):
         """returns the number of pieces in a row as an integer"""
-        theRow = piece.getLocation()[1]
+        theRow = piece.getLocation()[0]
         counter = 0
         for i in range(0, self.size):
             if self.board[theRow][i] != None:
@@ -45,7 +45,7 @@ class Board:
 
     def numCol(self, piece):
         """returns the number of pieces in a column as an integer"""
-        theCol = piece.getLocation()[0]
+        theCol = piece.getLocation()[1]
         counter = 0
         for i in range(0, self.size):
             if self.board[i][theCol] != None:
@@ -75,13 +75,13 @@ class Board:
         (x, y) = piece.getLocation()
         x -= 1; y += 1
         counter = 0
-        while x != 0 and y != self.size-1:
+        while x >= 0 and y <= self.size-1:
             if self.board[x][y] != None:
                 counter += 1
             x -= 1; y +=1
 
         (x, y) = piece.getLocation()
-        while x != self.size-1 and y != 0:
+        while x <= self.size-1 and y >= 0:
             if self.board[x][y] != None:
                 counter += 1
             x += 1; y -=1
@@ -150,63 +150,68 @@ class Board:
         row = 0-nah #from negative to positive
         while row <= nah:
             if row != 0:
-                if self.board[x][y+row] == None:
-                    #if tile is empty, you can go!
-                    availables.append((x, y+row))
-                elif self.board[x][y+row].getTeam() != piece.getTeam():
-                    availables.append((x, y+row))
-                    if row > 0:
-                        # if u run into enemy on ur way away, u can't jump
-                        row = nah
-                    if row < 0:
-                        # if u run into an enemy on ur way to, delete prev spaces
-                        for i in range(nah+row):
-                            availables.pop(len(availables)-1)
+                if (y+row <= self.size-1) and (y+row >= 0):
+                    if self.board[x][y+row] == None:
+                        #if tile is empty, you can go!
+                        availables.append((x, y+row))
+                    elif self.board[x][y+row].getTeam() != piece.getTeam():
+                        availables.append((x, y+row))
+                        if row > 0:
+                            # if u run into enemy on ur way away, u can't jump
+                            row = nah
+                        if row < 0:
+                            # if u run into an enemy on ur way to, delete prev spaces
+                            for i in range(nah+row):
+                                availables.pop(len(availables)-1)
             row += 1
 
         nah = self.numCol(piece)
         col = 0-nah
         while col <= nah:
             if col != 0:
-                if self.board[x+col][y] == None:
-                    availables.append((x+col, y))
-                elif self.board[x+col][y].getTeam() != piece.getTeam():
-                    availables.append((x+col, y))
-                    if col > 0:
-                        col = nah
-                    if col < 0:
-                        for i in range(nah+col):
-                            availables.pop(len(availables)-1)
+                if (x+col <= self.size-1) and (x+col >= 0):
+                    if self.board[x+col][y] == None:
+                        availables.append((x+col, y))
+                    elif self.board[x+col][y].getTeam() != piece.getTeam():
+                        availables.append((x+col, y))
+                        if col > 0:
+                            col = nah
+                        if col < 0:
+                            for i in range(nah+col):
+                                availables.pop(len(availables)-1)
             col += 1
 
         nah = self.numPosDiagonal(piece)
         ack = 0-nah
         while ack <= nah:
             if ack != 0:
-                if self.board[x+ack][y+ack] == None:
-                    availables.append((x+ack, y+ack))
-                elif self.board[x+ack][y+ack].getTeam() != piece.getTeam():
-                    availables.append((x+ack, y+ack))
-                    if ack > 0:
-                        ack = nah
-                    if ack < 0:
-                        for i in range(nah+ack):
-                            availables.pop(len(availables)-1)
+                if (x+ack <= self.size-1) and (y+ack <= self.size-1) and (x+ack >= 0) and (y+ack >= 0):
+                    if self.board[x+ack][y+ack] == None:
+                        availables.append((x+ack, y+ack))
+                    elif self.board[x+ack][y+ack].getTeam() != piece.getTeam():
+                        availables.append((x+ack, y+ack))
+                        if ack > 0:
+                            ack = nah
+                        if ack < 0:
+                            for i in range(nah+ack):
+                                availables.pop(len(availables)-1)
+                    
             ack += 1
 
         nah = self.numNegDiagonal(piece)
         ick = 0-nah
         while ick <= nah:
             if ick != 0:
-                if self.board[x+ick][y-ick] == None:
-                    availables.append((x+ick, y-ick))
-                elif self.board[x+ick][y-ick].getTeam() != piece.getTeam():
-                    availables.append((x+ick, y-ick))
-                    if ick > 0:
-                        ick = nah
-                    if ick < 0:
-                        for i in range(nah+ick):
-                            availables.pop(len(availables)-1)
+                if (x+ick <= self.size-1) and (y-ick <= self.size-1) and (x+ick >= 0) and (y-ick >= 0):
+                    if self.board[x+ick][y-ick] == None:
+                        availables.append((x+ick, y-ick))
+                    elif self.board[x+ick][y-ick].getTeam() != piece.getTeam():
+                        availables.append((x+ick, y-ick))
+                        if ick > 0:
+                            ick = nah
+                        if ick < 0:
+                            for i in range(nah+ick):
+                                availables.pop(len(availables)-1)
             ick += 1
 
         return availables
