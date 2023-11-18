@@ -155,25 +155,34 @@ class Board:
         (x, y) = piece.getLocation()
         avrow = []
         #iterating through number in row
-        nah = self.numRow(piece)
-        row = 0-nah #from negative to positive
-        while row <= nah:
-            if row != 0:
-                if (y+row <= self.size-1) and (y+row >= 0):
-                    if self.board[x][y+row] == None:
-                        #if tile is empty, you can go!
-                        avrow.append((x, y+row))
-                    elif self.board[x][y+row].getTeam() != piece.getTeam():
-                        if row > 0:
-                            avrow.append((x, y+row))
-                            # if u run into enemy on ur way away, u can't jump
-                            row = nah
-                        if row < 0:
-                            # if u run into an enemy on ur way to, delete prev spaces
-                            while len(avrow) > 0:
-                                avrow.pop(len(avrow)-1)
-                            avrow.append((x, y+row))
-            row += 1
+        row = self.numRow(piece)
+        
+        if y+row <= self.size-1:
+            if self.board[x][y+row] == None:
+                avrow.append((x,y+row))
+            elif self.board[x][y+row].getTeam() != piece.getTeam():
+                avrow.append((x,y+row))
+            i=row-1
+            while i>0:
+                if self.board[x][y+i] != None:
+                    if self.board[x][y+i].getTeam() != piece.getTeam:
+                        while len(avrow) > 0:
+                            avrow.pop(0)
+                i-=1
+
+        if y-row >= 0:
+            if self.board[x][y-row] == None:
+                avrow.append((x,y-row))
+            elif self.board[x][y-row].getTeam() != piece.getTeam():
+                avrow.append((x,y-row))
+            i=row-1
+            while i>0:
+                if self.board[x][y-i] != None:
+                    if self.board[x][y-i].getTeam() != piece.getTeam:
+                        while len(avrow) > 0:
+                            avrow.pop(0)
+                i-=1
+
         return avrow
 
     def rangecol(self, piece):
@@ -182,7 +191,6 @@ class Board:
         nah = self.numCol(piece)
         col = 0-nah
         while col <= nah:
-            print('col is: '+str(col))
             if col != 0:
                 if (x+col <= self.size-1) and (x+col >= 0):
                     if self.board[x+col][y] == None:
@@ -196,8 +204,7 @@ class Board:
                         if col < 0:
                             while len(avcol) > 0:
                                 avcol.pop(len(avcol)-1)
-                                print('alvol is now: '+str(len(avcol)))
-                            print('deleted pieces and reset!')
+
                             avcol.append((x+col, y))
             col += 1
         return avcol
