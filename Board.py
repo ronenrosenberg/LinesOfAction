@@ -149,7 +149,6 @@ class Board:
     def range(self, piece):
         """returns a list of ordered pairs, containing all the locations that a piece can move to"""
         available = self.rangerow(piece) + self.rangecol(piece) + self.rangeposd(piece) + self.rangenegd(piece)
-        print(str(available))
         return available
 
     def rangerow(self, piece):
@@ -157,7 +156,6 @@ class Board:
         avrow = []
         #iterating through number in row
         nah = self.numRow(piece)
-        print("row: " + str(nah))
         row = 0-nah #from negative to positive
         while row <= nah:
             if row != 0:
@@ -183,7 +181,6 @@ class Board:
         (x, y) = piece.getLocation()
         avcol = []
         nah = self.numCol(piece)
-        print("col: " + str(nah))
         col = 0-nah
         while col <= nah:
             if col != 0:
@@ -206,7 +203,6 @@ class Board:
         (x, y) = piece.getLocation()
         avposd= []
         nah = self.numPosDiagonal(piece)
-        print("posd: " + str(nah))
         ack = 0-nah
         while ack <= nah:
             if ack != 0:
@@ -228,7 +224,6 @@ class Board:
         (x, y) = piece.getLocation()
         avnegd = []
         nah = self.numNegDiagonal(piece)
-        print("negd: " + str(nah))
         ick = 0-nah
         while ick <= nah:
             if ick != 0:
