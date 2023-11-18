@@ -73,6 +73,14 @@ class LinesOfAction:
                     (x, y) = coord
                     stddraw.setPenColor(stddraw.YELLOW)
                     stddraw.filledSquare(x*side + half, y*side + half, half * 0.93)
+                    if self.board.getBoard()[x][y] != None:
+                        if self.board.getBoard()[x][y].getTeam() == "white":
+                            stddraw.setPenColor(stddraw.WHITE)
+                            stddraw.filledCircle(x*side + half, y*side + half, half/0.5*0.4)
+                        elif self.board.getBoard()[x][y].getTeam() == "black":
+                            stddraw.setPenColor(stddraw.BLACK)
+                            stddraw.filledCircle(x*side + half, y*side + half, half/0.5*0.4)
+
                 
                 #piece is "selected"
                 self.selected = highlighted
