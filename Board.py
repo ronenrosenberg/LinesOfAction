@@ -210,13 +210,14 @@ class Board:
                     if self.board[x+ack][y+ack] == None:
                         avposd.append((x+ack, y+ack))
                     elif self.board[x+ack][y+ack].getTeam() != piece.getTeam():
-                        avposd.append((x+ack, y+ack))
                         if ack > 0:
+                            avposd.append((x+ack, y+ack))
                             ack = nah
                         if ack < 0:
                             for i in range(nah+ack+1):
                                 if len(avposd) > 0:
-                                    avposd.pop(len(avposd)-1)   
+                                    avposd.pop(len(avposd)-1)
+                            avposd.append((x+ack, y+ack))   
             ack += 1
         return avposd
 
@@ -231,13 +232,14 @@ class Board:
                     if self.board[x+ick][y-ick] == None:
                         avnegd.append((x+ick, y-ick))
                     elif self.board[x+ick][y-ick].getTeam() != piece.getTeam():
-                        avnegd.append((x+ick, y-ick))
                         if ick > 0:
+                            avnegd.append((x+ick, y-ick))
                             ick = nah
                         if ick < 0:
                             for i in range(nah+ick+1):
                                 if len(avnegd) > 0:
                                     avnegd.pop(len(avnegd)-1)
+                            avnegd.append((x+ick, y-ick))
             ick += 1
         return avnegd 
     
