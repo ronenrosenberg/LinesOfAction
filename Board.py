@@ -170,10 +170,9 @@ class Board:
                             row = nah
                         if row < 0:
                             # if u run into an enemy on ur way to, delete prev spaces
-                            for i in range(nah+row+1):
-                                if len(avrow) > 0:
-                                    avrow.pop(len(avrow)-1)
-                        avrow.append((x, y+row))
+                            while len(avrow) > 0:
+                                avrow.pop(len(avrow)-1)
+                            avrow.append((x, y+row))
             row += 1
         return avrow
 
@@ -183,18 +182,22 @@ class Board:
         nah = self.numCol(piece)
         col = 0-nah
         while col <= nah:
+            print('col is: '+str(col))
             if col != 0:
                 if (x+col <= self.size-1) and (x+col >= 0):
                     if self.board[x+col][y] == None:
+                        #print('adding piece!')
                         avcol.append((x+col, y))
                     elif self.board[x+col][y].getTeam() != piece.getTeam():
                         if col > 0:
+                            #print('final piece!')
                             avcol.append((x+col, y))
                             col = nah
                         if col < 0:
-                            for i in range(nah+col+1):
-                                if len(avcol) > 0:
-                                    avcol.pop(len(avcol)-1)
+                            while len(avcol) > 0:
+                                avcol.pop(len(avcol)-1)
+                                print('alvol is now: '+str(len(avcol)))
+                            print('deleted pieces and reset!')
                             avcol.append((x+col, y))
             col += 1
         return avcol
@@ -214,9 +217,8 @@ class Board:
                             avposd.append((x+ack, y+ack))
                             ack = nah
                         if ack < 0:
-                            for i in range(nah+ack+1):
-                                if len(avposd) > 0:
-                                    avposd.pop(len(avposd)-1)
+                            while len(avposd) > 0:
+                                avposd.pop(len(avposd)-1)
                             avposd.append((x+ack, y+ack))   
             ack += 1
         return avposd
@@ -236,9 +238,8 @@ class Board:
                             avnegd.append((x+ick, y-ick))
                             ick = nah
                         if ick < 0:
-                            for i in range(nah+ick+1):
-                                if len(avnegd) > 0:
-                                    avnegd.pop(len(avnegd)-1)
+                            while len(avnegd) > 0:
+                                avnegd.pop(len(avnegd)-1)
                             avnegd.append((x+ick, y-ick))
             ick += 1
         return avnegd 
