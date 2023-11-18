@@ -54,16 +54,19 @@ class Board:
     
     def numPosDiagonal(self, piece):
         """returns the number of pieces in a positive diagonal as an integer"""
+        
+        # iterating from before <x,y> to bottom
         (x, y) = piece.getLocation()
         x -= 1; y -= 1
         counter = 0
-        while x != 0 and y != 0:
+        while x >= 0 and y >= 0:
             if self.board[x][y] != None:
                 counter += 1
             x -= 1; y -=1
 
+        # iterating from top to <x,y>
         (x, y) = piece.getLocation()
-        while x != self.size-1 and y != self.size-1:
+        while x <= self.size-1 and y <= self.size-1:
             if self.board[x][y] != None:
                 counter += 1
             x += 1; y +=1
@@ -72,6 +75,8 @@ class Board:
 
     def numNegDiagonal(self, piece):
         """returns the number of pieces in a negative diagonal as an integer"""
+        
+        # iterating from before <x,y> to bottom
         (x, y) = piece.getLocation()
         x -= 1; y += 1
         counter = 0
@@ -80,6 +85,7 @@ class Board:
                 counter += 1
             x -= 1; y +=1
 
+        # iterating from top to <x,y>
         (x, y) = piece.getLocation()
         while x <= self.size-1 and y >= 0:
             if self.board[x][y] != None:
@@ -141,78 +147,102 @@ class Board:
         return total
     
     def range(self, piece):
-        """returns a list of ordered pairs, containing all the locations that a piece can move to."""
-        availables = []
-        (x, y) = piece.getLocation()
+        """returns a list of ordered pairs, containing all the locations that a piece can move to"""
+        available = self.rangerow(piece) + self.rangecol(piece) + self.rangeposd(piece) + self.rangenegd(piece)
+        print(str(available))
+        return available
 
+    def rangerow(self, piece):
+        (x, y) = piece.getLocation()
+        avrow = []
         #iterating through number in row
         nah = self.numRow(piece)
+        print("row: " + str(nah))
         row = 0-nah #from negative to positive
         while row <= nah:
             if row != 0:
                 if (y+row <= self.size-1) and (y+row >= 0):
                     if self.board[x][y+row] == None:
                         #if tile is empty, you can go!
-                        availables.append((x, y+row))
+                        avrow.append((x, y+row))
                     elif self.board[x][y+row].getTeam() != piece.getTeam():
-                        availables.append((x, y+row))
                         if row > 0:
+                            avrow.append((x, y+row))
                             # if u run into enemy on ur way away, u can't jump
                             row = nah
                         if row < 0:
                             # if u run into an enemy on ur way to, delete prev spaces
-                            for i in range(nah+row):
-                                availables.pop(len(availables)-1)
+                            for i in range(nah+row+1):
+                                if len(avrow) > 0:
+                                    avrow.pop(len(avrow)-1)
+                        avrow.append((x, y+row))
             row += 1
+        return avrow
 
+    def rangecol(self, piece):
+        (x, y) = piece.getLocation()
+        avcol = []
         nah = self.numCol(piece)
+        print("col: " + str(nah))
         col = 0-nah
         while col <= nah:
             if col != 0:
                 if (x+col <= self.size-1) and (x+col >= 0):
                     if self.board[x+col][y] == None:
-                        availables.append((x+col, y))
+                        avcol.append((x+col, y))
                     elif self.board[x+col][y].getTeam() != piece.getTeam():
-                        availables.append((x+col, y))
                         if col > 0:
+                            avcol.append((x+col, y))
                             col = nah
                         if col < 0:
-                            for i in range(nah+col):
-                                availables.pop(len(availables)-1)
+                            for i in range(nah+col+1):
+                                if len(avcol) > 0:
+                                    avcol.pop(len(avcol)-1)
+                            avcol.append((x+col, y))
             col += 1
+        return avcol
 
+    def rangeposd(self, piece):
+        (x, y) = piece.getLocation()
+        avposd= []
         nah = self.numPosDiagonal(piece)
+        print("posd: " + str(nah))
         ack = 0-nah
         while ack <= nah:
             if ack != 0:
                 if (x+ack <= self.size-1) and (y+ack <= self.size-1) and (x+ack >= 0) and (y+ack >= 0):
                     if self.board[x+ack][y+ack] == None:
-                        availables.append((x+ack, y+ack))
+                        avposd.append((x+ack, y+ack))
                     elif self.board[x+ack][y+ack].getTeam() != piece.getTeam():
-                        availables.append((x+ack, y+ack))
+                        avposd.append((x+ack, y+ack))
                         if ack > 0:
                             ack = nah
                         if ack < 0:
-                            for i in range(nah+ack):
-                                availables.pop(len(availables)-1)
-                    
+                            for i in range(nah+ack+1):
+                                if len(avposd) > 0:
+                                    avposd.pop(len(avposd)-1)   
             ack += 1
+        return avposd
 
+    def rangenegd(self, piece):
+        (x, y) = piece.getLocation()
+        avnegd = []
         nah = self.numNegDiagonal(piece)
+        print("negd: " + str(nah))
         ick = 0-nah
         while ick <= nah:
             if ick != 0:
                 if (x+ick <= self.size-1) and (y-ick <= self.size-1) and (x+ick >= 0) and (y-ick >= 0):
                     if self.board[x+ick][y-ick] == None:
-                        availables.append((x+ick, y-ick))
+                        avnegd.append((x+ick, y-ick))
                     elif self.board[x+ick][y-ick].getTeam() != piece.getTeam():
-                        availables.append((x+ick, y-ick))
+                        avnegd.append((x+ick, y-ick))
                         if ick > 0:
                             ick = nah
                         if ick < 0:
-                            for i in range(nah+ick):
-                                availables.pop(len(availables)-1)
+                            for i in range(nah+ick+1):
+                                if len(avnegd) > 0:
+                                    avnegd.pop(len(avnegd)-1)
             ick += 1
-
-        return availables
+        return avnegd 
     

@@ -14,9 +14,9 @@ def test_num_row():
 
 def test_num_col():
     board = Board(10)
-    piece = board.getBoard()[2][0]
+    piece = board.getBoard()[0][2]
     answer = board.numCol(piece)
-    assert answer == 8
+    assert answer == 2
 
 def test_num_pos_diagonal():
     board = Board(10)
