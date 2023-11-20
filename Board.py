@@ -148,65 +148,31 @@ class Board:
     
     def range(self, piece):
         """returns a list of ordered pairs, containing all the locations that a piece can move to"""
-        available = self.rangerow(piece) + self.rangecol(piece) + self.rangeposd(piece) + self.rangenegd(piece)
-        #print(str(available))
+        available = self.rangecol(piece) + self.rangerow(piece) + self.rangeposd(piece) + self.rangenegd(piece)
+        print(str(available))
         return available
 
-    def rangerow(self, piece):
-        (x, y) = piece.getLocation()
-        avrow = []
-        #iterating through number in row
-        row = self.numRow(piece)
-        
-        if y+row <= self.size-1:
-            if self.board[x][y+row] == None:
-                avrow.append((x,y+row))
-            elif self.board[x][y+row].getTeam() != piece.getTeam():
-                avrow.append((x,y+row))
-
-            i=row-1
-            while i>0:
-                if self.board[x][y+i] != None:
-                    if self.board[x][y+i].getTeam() != piece.getTeam():
-                        while len(avrow) > 0:
-                            avrow.pop(0)
-                i-=1
-
-        if y-row >= 0:
-            if self.board[x][y-row] == None:
-                avrow.append((x,y-row))
-            elif self.board[x][y-row].getTeam() != piece.getTeam():
-                avrow.append((x,y-row))
-            i=row-1
-            while i>0:
-                if self.board[x][y-i] != None:
-                    if self.board[x][y-i].getTeam() != piece.getTeam():
-                        while len(avrow) > 0:
-                            avrow.pop(0)
-                i-=1
-
-        return avrow
-
     def rangecol(self, piece):
+        """returns the locations a piece can jump to in its own column"""
         (x, y) = piece.getLocation()
         avcol = []
         #iterating through number in row
         col = self.numCol(piece)
         
-        if x+col <= self.size-1:
+        if x+col <= self.size-1: #if in range positive
             if self.board[x+col][y] == None:
-                avcol.append((x+col,y))
+                avcol.append((x+col,y)) #if empty, append
             elif self.board[x+col][y].getTeam() != piece.getTeam():
-                avcol.append((x+col,y))
+                avcol.append((x+col,y)) #if enemy, append
             i=col-1
-            while i>0:
+            while i>0: #if on the way to an available tile,
                 if self.board[x+i][y] != None:
-                    if self.board[x+i][y].getTeam() != piece.getTeam():
+                    if self.board[x+i][y].getTeam() != piece.getTeam(): #there is an enemy
                         while len(avcol) > 0:
-                            avcol.pop(len(avcol)-1)
+                            avcol.pop(len(avcol)-1) #you cannot go anymore bc u can't jump over
                 i-=1
 
-        if x-col >= 0:
+        if x-col >= 0: #same thing but negative
             if self.board[x-col][y] == None:
                 avcol.append((x-col,y))
             elif self.board[x-col][y].getTeam() != piece.getTeam():
@@ -221,32 +187,70 @@ class Board:
 
         return avcol
 
+    def rangerow(self, piece):
+        """returns the locations a piece can jump to in its own row"""
+        (x, y) = piece.getLocation()
+        avrow = []
+        #iterating through number in row
+        row = self.numRow(piece)
+        
+        if y+row <= self.size-1: #if in range positive
+            if self.board[x][y+row] == None:
+                avrow.append((x,y+row)) #if empty can jump to
+            elif self.board[x][y+row].getTeam() != piece.getTeam():
+                avrow.append((x,y+row)) #if enemy, can take
+
+            i=row-1
+            while i>0: #on the way, if enemy, remove location
+                if self.board[x][y+i] != None:
+                    if self.board[x][y+i].getTeam() != piece.getTeam():
+                        while len(avrow) > 0:
+                            avrow.pop(0)
+                i-=1
+
+        if y-row >= 0: #same as before but negative
+            if self.board[x][y-row] == None:
+                avrow.append((x,y-row))
+            elif self.board[x][y-row].getTeam() != piece.getTeam():
+                avrow.append((x,y-row))
+            i=row-1
+            while i>0:
+                if self.board[x][y-i] != None:
+                    if self.board[x][y-i].getTeam() != piece.getTeam():
+                        while len(avrow) > 0:
+                            avrow.pop(0)
+                i-=1
+
+        return avrow
+
     def rangeposd(self, piece):
+        """returns the locations a piece can jump to in its positive diagonal"""
         (x, y) = piece.getLocation()
         avposd = []
         #iterating through number in row
         ack = self.numPosDiagonal(piece)
         
+        #appending available spots
         if (x+ack <= self.size-1) and (y+ack <= self.size-1):
             if self.board[x+ack][y+ack] == None:
                 avposd.append((x+ack,y+ack))
             elif self.board[x+ack][y+ack].getTeam() != piece.getTeam():
                 avposd.append((x+ack,y+ack))
             i=ack-1
-            while i>0:
+            while i>0: #removing if enemy in way
                 if self.board[x+i][y+i] != None:
                     if self.board[x+i][y+i].getTeam() != piece.getTeam():
                         while len(avposd) > 0:
                             avposd.pop(len(avposd)-1)
                 i-=1
 
-        if (x-ack >= 0) and (y-ack >= 0):
+        if (x-ack >= 0) and (y-ack >= 0): #appending available spots
             if self.board[x-ack][y-ack] == None:
                 avposd.append((x-ack,y-ack))
             elif self.board[x-ack][y-ack].getTeam() != piece.getTeam():
                 avposd.append((x-ack,y-ack))
             i=ack-1
-            while i>0:
+            while i>0: #removing if enemy in way
                 if self.board[x-i][y-i] != None:
                     if self.board[x-i][y-i].getTeam() != piece.getTeam():
                         while len(avposd) > 0:
@@ -256,31 +260,35 @@ class Board:
         return avposd
 
     def rangenegd(self, piece):
+        """returns the locations a piece can jump to in its negative diagonal"""
         (x, y) = piece.getLocation()
         avnegd = []
         #iterating through number in row
         ick = self.numNegDiagonal(piece)
         
+        #appending available spots
         if (x+ick <= self.size-1) and (y-ick >= 0):
             if self.board[x+ick][y-ick] == None:
                 avnegd.append((x+ick,y-ick))
             elif self.board[x+ick][y-ick].getTeam() != piece.getTeam():
-                avnegd.append((x+ick,y+ick))
+                avnegd.append((x+ick,y-ick))
             i=ick-1
-            while i>0:
+            while i>0: #removing if enemy in way
                 if self.board[x+i][y-i] != None:
                     if self.board[x+i][y-i].getTeam() != piece.getTeam():
                         while len(avnegd) > 0:
                             avnegd.pop(len(avnegd)-1)
                 i-=1
 
-        if (x-ick >= 0) and (y+ick <= self.size-1):
+        if (x-ick >= 0) and (y+ick <= self.size-1): #appending available spots
             if self.board[x-ick][y+ick] == None:
+                print(str(x-ick) + "," + str(y+ick))
                 avnegd.append((x-ick,y+ick))
             elif self.board[x-ick][y+ick].getTeam() != piece.getTeam():
+                print(str(x-ick) + "," + str(y+ick))
                 avnegd.append((x-ick,y+ick))
             i=ick-1
-            while i>0:
+            while i>0: #removing if enemy in way
                 if self.board[x-i][y-i] != None:
                     if self.board[x-i][y-i].getTeam() != piece.getTeam():
                         while len(avnegd) > 0:
