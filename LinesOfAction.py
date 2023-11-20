@@ -4,6 +4,8 @@ import stddraw
 
 SIZE = 8
 
+"""__NAME__ == Suri Castro, Ronen Rosenburg"""
+
 class LinesOfAction:
     def __init__(self, SIZE = 8):
         #the actual 2D array

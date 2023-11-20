@@ -1,5 +1,7 @@
 from Piece import *
 
+"""__NAME__ == Suri Castro, Ronen Rosenburg"""
+
 class Board:
     def __init__(self, SIZE = 10):
         """initialize a board of SIZE for the game"""

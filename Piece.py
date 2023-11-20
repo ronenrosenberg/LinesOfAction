@@ -1,3 +1,5 @@
+"""__NAME__ == Suri Castro, Ronen Rosenburg"""
+
 class Piece:
     def __init__(self, team, location):
         self.team = team
