@@ -160,12 +160,15 @@ class Board:
         if y+row <= self.size-1:
             if self.board[x][y+row] == None:
                 avrow.append((x,y+row))
+                print ("<"+ str(x) + ", " + str(y+row) + ">")
             elif self.board[x][y+row].getTeam() != piece.getTeam():
                 avrow.append((x,y+row))
+                print ("<"+ str(x) + ", " + str(y+row) + ">")
+
             i=row-1
             while i>0:
                 if self.board[x][y+i] != None:
-                    if self.board[x][y+i].getTeam() != piece.getTeam:
+                    if self.board[x][y+i].getTeam() != piece.getTeam():
                         while len(avrow) > 0:
                             avrow.pop(0)
                 i-=1
@@ -178,7 +181,7 @@ class Board:
             i=row-1
             while i>0:
                 if self.board[x][y-i] != None:
-                    if self.board[x][y-i].getTeam() != piece.getTeam:
+                    if self.board[x][y-i].getTeam() != piece.getTeam():
                         while len(avrow) > 0:
                             avrow.pop(0)
                 i-=1
@@ -188,66 +191,102 @@ class Board:
     def rangecol(self, piece):
         (x, y) = piece.getLocation()
         avcol = []
-        nah = self.numCol(piece)
-        col = 0-nah
-        while col <= nah:
-            if col != 0:
-                if (x+col <= self.size-1) and (x+col >= 0):
-                    if self.board[x+col][y] == None:
-                        #print('adding piece!')
-                        avcol.append((x+col, y))
-                    elif self.board[x+col][y].getTeam() != piece.getTeam():
-                        if col > 0:
-                            #print('final piece!')
-                            avcol.append((x+col, y))
-                            col = nah
-                        if col < 0:
-                            while len(avcol) > 0:
-                                avcol.pop(len(avcol)-1)
+        #iterating through number in row
+        col = self.numCol(piece)
+        
+        if x+col <= self.size-1:
+            if self.board[x+col][y] == None:
+                avcol.append((x+col,y))
+            elif self.board[x+col][y].getTeam() != piece.getTeam():
+                avcol.append((x+col,y))
+            i=col-1
+            while i>0:
+                if self.board[x+i][y] != None:
+                    if self.board[x+i][y].getTeam() != piece.getTeam():
+                        while len(avcol) > 0:
+                            avcol.pop(len(avcol)-1)
+                i-=1
 
-                            avcol.append((x+col, y))
-            col += 1
+        if x-col >= 0:
+            if self.board[x-col][y] == None:
+                avcol.append((x-col,y))
+            elif self.board[x-col][y].getTeam() != piece.getTeam():
+                avcol.append((x-col,y))
+            i=col-1
+            while i>0:
+                if self.board[x-i][y] != None:
+                    if self.board[x-i][y].getTeam() != piece.getTeam():
+                        while len(avcol) > 0:
+                            avcol.pop(len(avcol)-1)
+                i-=1
+
         return avcol
 
     def rangeposd(self, piece):
         (x, y) = piece.getLocation()
-        avposd= []
-        nah = self.numPosDiagonal(piece)
-        ack = 0-nah
-        while ack <= nah:
-            if ack != 0:
-                if (x+ack <= self.size-1) and (y+ack <= self.size-1) and (x+ack >= 0) and (y+ack >= 0):
-                    if self.board[x+ack][y+ack] == None:
-                        avposd.append((x+ack, y+ack))
-                    elif self.board[x+ack][y+ack].getTeam() != piece.getTeam():
-                        if ack > 0:
-                            avposd.append((x+ack, y+ack))
-                            ack = nah
-                        if ack < 0:
-                            while len(avposd) > 0:
-                                avposd.pop(len(avposd)-1)
-                            avposd.append((x+ack, y+ack))   
-            ack += 1
+        avposd = []
+        #iterating through number in row
+        ack = self.numPosDiagonal(piece)
+        
+        if (x+ack <= self.size-1) and (y+ack <= self.size-1):
+            if self.board[x+ack][y+ack] == None:
+                avposd.append((x+ack,y+ack))
+            elif self.board[x+ack][y+ack].getTeam() != piece.getTeam():
+                avposd.append((x+ack,y+ack))
+            i=ack-1
+            while i>0:
+                if self.board[x+i][y+i] != None:
+                    if self.board[x+i][y+i].getTeam() != piece.getTeam():
+                        while len(avposd) > 0:
+                            avposd.pop(len(avposd)-1)
+                i-=1
+
+        if (x-ack >= 0) and (y-ack >= 0):
+            if self.board[x-ack][y-ack] == None:
+                avposd.append((x-ack,y-ack))
+            elif self.board[x-ack][y-ack].getTeam() != piece.getTeam():
+                avposd.append((x-ack,y-ack))
+            i=ack-1
+            while i>0:
+                if self.board[x-i][y-i] != None:
+                    if self.board[x-i][y-i].getTeam() != piece.getTeam():
+                        while len(avposd) > 0:
+                            avposd.pop(len(avposd)-1)
+                i-=1
+
         return avposd
 
     def rangenegd(self, piece):
         (x, y) = piece.getLocation()
         avnegd = []
-        nah = self.numNegDiagonal(piece)
-        ick = 0-nah
-        while ick <= nah:
-            if ick != 0:
-                if (x+ick <= self.size-1) and (y-ick <= self.size-1) and (x+ick >= 0) and (y-ick >= 0):
-                    if self.board[x+ick][y-ick] == None:
-                        avnegd.append((x+ick, y-ick))
-                    elif self.board[x+ick][y-ick].getTeam() != piece.getTeam():
-                        if ick > 0:
-                            avnegd.append((x+ick, y-ick))
-                            ick = nah
-                        if ick < 0:
-                            while len(avnegd) > 0:
-                                avnegd.pop(len(avnegd)-1)
-                            avnegd.append((x+ick, y-ick))
-            ick += 1
+        #iterating through number in row
+        ick = self.numNegDiagonal(piece)
+        
+        if (x+ick <= self.size-1) and (y-ick >= 0):
+            if self.board[x+ick][y-ick] == None:
+                avnegd.append((x+ick,y-ick))
+            elif self.board[x+ick][y-ick].getTeam() != piece.getTeam():
+                avnegd.append((x+ick,y+ick))
+            i=ick-1
+            while i>0:
+                if self.board[x+i][y-i] != None:
+                    if self.board[x+i][y-i].getTeam() != piece.getTeam():
+                        while len(avnegd) > 0:
+                            avnegd.pop(len(avnegd)-1)
+                i-=1
+
+        if (x-ick >= 0) and (y+ick <= self.size-1):
+            if self.board[x-ick][y+ick] == None:
+                avnegd.append((x-ick,y+ick))
+            elif self.board[x-ick][y+ick].getTeam() != piece.getTeam():
+                avnegd.append((x-ick,y+ick))
+            i=ick-1
+            while i>0:
+                if self.board[x-i][y-i] != None:
+                    if self.board[x-i][y-i].getTeam() != piece.getTeam():
+                        while len(avnegd) > 0:
+                            avnegd.pop(len(avnegd)-1)
+                i-=1
+
         return avnegd 
     
