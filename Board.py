@@ -149,6 +149,7 @@ class Board:
     def range(self, piece):
         """returns a list of ordered pairs, containing all the locations that a piece can move to"""
         available = self.rangerow(piece) + self.rangecol(piece) + self.rangeposd(piece) + self.rangenegd(piece)
+        #print(str(available))
         return available
 
     def rangerow(self, piece):
@@ -160,10 +161,8 @@ class Board:
         if y+row <= self.size-1:
             if self.board[x][y+row] == None:
                 avrow.append((x,y+row))
-                print ("<"+ str(x) + ", " + str(y+row) + ">")
             elif self.board[x][y+row].getTeam() != piece.getTeam():
                 avrow.append((x,y+row))
-                print ("<"+ str(x) + ", " + str(y+row) + ">")
 
             i=row-1
             while i>0:
