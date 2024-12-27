@@ -6,8 +6,8 @@ def test_different_pieces():
     assert first != second
     
 def test_pieces_team():
-    boob = Piece("black", (1, 2))
-    team = boob.getTeam()
+    thing = Piece("black", (1, 2))
+    team = thing.getTeam()
     assert team == "black"
 
 def test_location_pieces():
